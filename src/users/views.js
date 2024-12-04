@@ -39,6 +39,14 @@ Views.signIn = async (user, ip) => {
             return {success: false, status: 400, message: 'Неверный логин или пароль'}
         }
 
+        if(!res.active) {
+            return {success: false, status: 400, message: 'Ваш аккаунт не активирован'}
+        }
+
+        if(res.ban) {
+            return {success: false, status: 400, message: 'Ваш аккаунт заблокирован'}
+        }
+
         let password = new Bun.CryptoHasher("sha256").update(user.password).digest("hex")
         if(res.password !== password) {
             return {success: false, status: 400, message: 'Неверный логин или пароль'}

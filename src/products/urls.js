@@ -4,5 +4,20 @@ import Views from "./views";
 
 const products = new Elysia({prefix: '/api/products'})
     .get('/all', ({query}) => Views.getAllProducts(query))
+    .post('/create', ({body, headers, ip}) => Views.createProduct(body, headers, ip), {
+        schema: {
+            body: {
+                title: t.String(),
+                description: t.String(),
+                price: t.Integer(),
+                discount: t.Integer(),
+                main_image: t.Files(),
+                images: t.Array(t.File()),
+                available: t.Boolean(),
+                new: t.Boolean(),
+                datetime: t.Date(),
+            }
+        }
+    })
 
 export default products;

@@ -34,7 +34,17 @@ const createtables = async () => {
             userid SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             password TEXT NOT NULL,
-            role TEXT DEFAULT 'client'
+            role TEXT DEFAULT 'client',
+            ban BOOLEAN DEFAULT false,
+            active BOOLEAN DEFAULT false
+        )`)
+
+        await pool.query(`CREATE TABLE IF NOT EXISTS services (
+            servicesid SERIAL PRIMARY KEY,
+            image TEXT NOT NULL,
+            title TEXT NOT NULL,
+            description TEXT NOT NULL,
+            price INT NOT NULL
         )`)
         
         console.log('database init')

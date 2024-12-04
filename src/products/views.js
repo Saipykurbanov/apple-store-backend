@@ -65,4 +65,34 @@ Views.createProduct = async (body, headers, ip) => {
 
 }
 
+Views.deleteProduct = async (id, headers, ip) => {
+    try {
+
+        let token = utils.getToken(headers)
+
+        if(token.ip !== ip) {
+            return  {success: false, status: 401, message: 'Токен не действителен'}
+        }
+
+        if(token.role !== 'admin') {
+            return {success: false, message: 'Недостаточно прав', status: 401}
+        }
+
+        let res = await pool.query(`SELECT * FROM product WHERE productid = $1`, [id])
+
+        res = res.rows[0]
+
+        if(!res) {
+            return {success: false, message: 'Не удалось удалить товар', status: 400}
+        }
+
+        await pool.query(`DELETE FROM products WHERE productid = $1`, [id])
+
+        return {success: true, status: 200}
+
+    } catch(e) {
+        return {success: false, status: 500, message: e.message}
+    }
+}
+
 export default Views;

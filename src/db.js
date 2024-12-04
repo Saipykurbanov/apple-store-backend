@@ -44,7 +44,9 @@ const createtables = async () => {
             image TEXT NOT NULL,
             title TEXT NOT NULL,
             description TEXT NOT NULL,
-            price INT NOT NULL
+            price INT NOT NULL,
+            slug TEXT UNIQUE,
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
         
         console.log('database init')

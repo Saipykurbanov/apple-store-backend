@@ -45,7 +45,6 @@ const createtables = async () => {
             title TEXT NOT NULL,
             description TEXT NOT NULL,
             price INT NOT NULL,
-            slug TEXT UNIQUE,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
         

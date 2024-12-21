@@ -18,7 +18,8 @@ const services = new Elysia({prefix: '/api/services'})
     .put('/update/:id', ({params: {id}, body, headers, ip}) => Views.updateServices(id, body, headers, ip), {
         schema: {
             body: {
-                image: t.Files(),
+                file: t.Files(),
+                image: t.String(),
                 title: t.String(),
                 description: t.String(),
                 price: t.Integer(),

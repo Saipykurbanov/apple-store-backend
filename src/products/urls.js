@@ -20,5 +20,23 @@ const products = new Elysia({prefix: '/api/products'})
             }
         }
     })
+    .put('/update/:id', ({body, headers, ip, params: {id}}) => Views.updateProduct(body, headers, ip, id), {
+        schema: {
+            body: {
+                title: t.String(),
+                description: t.String(),
+                price: t.Integer(),
+                discount: t.Integer(),
+                main_image: t.Files(),
+                images: t.Array(t.File()),
+                available: t.Boolean(),
+                new: t.Boolean(),
+                datetime: t.Date(),
+                // Файлы
+                mainFile: t.Files(),
+                imagesFiles: t.Array(t.File())
+            }
+        }
+    })
 
 export default products;

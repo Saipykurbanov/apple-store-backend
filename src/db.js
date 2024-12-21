@@ -27,7 +27,6 @@ const createtables = async () => {
             available BOOLEAN DEFAULT false,
             new BOOLEAN DEFAULT false,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
-            slug TEXT UNIQUE
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS users (

@@ -10,7 +10,7 @@ import orders from "./orders/urls";
 const app = new Elysia()
     .use(cors())
     .use(ip())
-    .get('/images/:name', ({params: {name}}) => upload.getImage(name))
+    .get('/images/:folder/:name', ({params: {folder, name}}) => upload.getImage(name, folder))
     .use(products)
     .use(services)
     .use(orders)

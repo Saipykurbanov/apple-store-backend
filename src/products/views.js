@@ -1,5 +1,6 @@
 import pool from "../db";
 import jwt from "../jwt";
+import upload from "../upload";
 import utils from "../utils";
 
 const Views = {}
@@ -64,6 +65,46 @@ Views.updateProduct = async (body, headers, ip, id) => {
         
         if(!access.success) return access
 
+        if(body.mainFile) {
+            upload.deleteImage(body.main_image, 'products')
+            body.main_image = crypto.randomUUID()
+            await upload.image(body.main_image, body.mainFile, 'products')
+        }
+
+        if (body.imagesFiles && body.imagesFiles.length > 0) {
+
+            body.images.map((el) => {
+                upload.deleteImage(el, 'products')
+            })
+
+            body.images = []
+
+            const imageUploadPromises = body.imagesFiles.map(async (el) => {
+                const imageName = crypto.randomUUID()
+                body.images.push(imageName);
+                await upload.image(imageName, el, 'products');
+            });
+
+            await Promise.all(imageUploadPromises);
+        }
+
+        let req = await pool.query(`
+            UPDATE products SET
+            title = $1,
+            description = $2,
+            price = $3,
+            discount = $4,
+            main_image = $5,
+            images = $6,
+            available = $7,
+            new = $8
+            WHERE productid = $9
+            RETURNING *`, 
+            [body.title, body.description, body.price, 
+            body.discount, body.main_image, body.images, 
+            body.available, body.new, id])
+
+        return {success: true, message: 'Товар успешно обновлён', data: req.rows[0]}
 
 
     } catch(e) {

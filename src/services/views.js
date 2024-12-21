@@ -48,8 +48,8 @@ Views.updateServices = async (id, body, headers, ip) => {
         if(!access.success) return access
 
         if(body.file) {
-            body.image = crypto.randomUUID()
             upload.deleteImage(body.image, 'services')
+            body.image = crypto.randomUUID()
             await upload.image(imageName, body.file, 'services')
         }
 
@@ -58,7 +58,7 @@ Views.updateServices = async (id, body, headers, ip) => {
             title = $1, 
             description = $2, 
             price = $3, 
-            image = $4,
+            image = $4
             WHERE servicesid = $5 
             RETURNING *`,
             [body.title, body.description, body.price, body.image, id])

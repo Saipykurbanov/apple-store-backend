@@ -2,20 +2,20 @@ import { unlinkSync } from "bun:fs"
 
 const upload = {}
 
-upload.image = async (name, image) => {
+upload.image = async (name, image, folder) => {
     try {
         if(image === 'undefined') {
             return {success: false}
         }
-        await Bun.write(`./images/${name}`, image)
+        await Bun.write(`./images/${folder}/${name}`, image)
         return {success: true}
     } catch(e) {
         return {success: false}
     }
 }
 
-upload.getImage = (name) => {
-    let image = Bun.file(`./images/${name}`)
+upload.getImage = (name, folder) => {
+    let image = Bun.file(`./images/${folder}/${name}`)
     if(image.size === 0) {
         return Bun.file('./images/default.webp') //Заглушка если нету изображения
     } else {
@@ -23,10 +23,10 @@ upload.getImage = (name) => {
     }
 }
 
-upload.deleteImage = (name) => {
-    let image = Bun.file(`./images/${name}`)
+upload.deleteImage = (name, folder) => {
+    let image = Bun.file(`./images/${folder}/${name}`)
     if(image.size !== 0) {
-        return unlinkSync(`./images/${name}`)
+        return unlinkSync(`./images/${folder}/${name}`)
     }
 }
 

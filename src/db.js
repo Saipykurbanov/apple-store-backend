@@ -10,11 +10,6 @@ const pool = new Pool({
 
 const createtables = async () => {
     try {
-        await pool.query(`CREATE TABLE IF NOT EXISTS categories (
-            categoryid SERIAL PRIMARY KEY,
-            title TEXT
-            image TEXT
-        )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS products (
             productid SERIAL PRIMARY KEY,
@@ -27,7 +22,6 @@ const createtables = async () => {
             available BOOLEAN DEFAULT false,
             new BOOLEAN DEFAULT false,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
-            slug TEXT UNIQUE
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS users (
@@ -45,10 +39,18 @@ const createtables = async () => {
             title TEXT NOT NULL,
             description TEXT NOT NULL,
             price INT NOT NULL,
-            slug TEXT UNIQUE,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
         
+        await pool.query(`CREATE TABLE IF NOT EXISTS orders (
+            ordersid SERIAL PRIMARY KEY,
+            username TEXT NOT NULL,
+            phone TEXT,
+            address TEXT,
+            poductid INT NOT NULL,
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
+        )`)
+
         console.log('database init')
     }
     catch (e) {

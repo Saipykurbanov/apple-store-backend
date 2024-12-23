@@ -6,10 +6,18 @@ const users = new Elysia({prefix: '/api/users'})
     .post('/init', ({headers, ip}) => Views.init(headers, ip))
     .post('/signin', ({body, ip}) => Views.signIn(body, ip), {
         schema: {
-            body: {
-                email: t.String(),
+            body: t.Object({
+                name: t.String(),
                 password: t.String()
-            }
+            })
+        }
+    })
+    .post('/create', ({body}) => Views.createUser(body), {
+        schema: {
+            body: t.Object({
+                name: t.String(),
+                password: t.String()
+            })
         }
     })
     

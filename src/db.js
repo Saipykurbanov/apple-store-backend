@@ -21,7 +21,7 @@ const createtables = async () => {
             images TEXT[],
             available BOOLEAN DEFAULT false,
             new BOOLEAN DEFAULT false,
-            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS users (

@@ -51,6 +51,14 @@ const createtables = async () => {
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
 
+        await pool.query(`CREATE TABLE IF NOT EXISTS visits (
+            visitid SERIAL PRIMARY KEY,
+            count INT DEFAULT 1,
+            day INT,
+            month INT,
+            year INT
+        )`)
+
         console.log('database init')
     }
     catch (e) {

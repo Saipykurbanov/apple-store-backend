@@ -29,10 +29,23 @@ Views.init = async (headers, ip) => {
     }
 }
 
+Views.createUser = async (body) => {
+    try {
+        let password = new Bun.CryptoHasher("sha256").update(body.password).digest("hex");
+        
+        let res = await pool.query(`INSERT INTO users (name, password) VALUES (\$1, \$2) RETURNING *`, [body.name, password])
+
+        return {success: true, status: 200, data: res.rows[0]}
+
+    } catch(e) {
+        return {success: false, error: e, status: 400}
+    }
+}
+
 Views.signIn = async (user, ip) => {
     try {
 
-        let res = await pool.query(`SELECT * FROM users WHERE email = \$1`, [user.email])
+        let res = await pool.query(`SELECT * FROM users WHERE name = \$1`, [user.name])
         res = res.rows[0]
 
         if(!res) {

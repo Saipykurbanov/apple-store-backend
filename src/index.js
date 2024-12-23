@@ -6,6 +6,7 @@ import services from "./services/urls";
 import products from "./products/urls";
 import orders from "./orders/urls";
 import users from "./users/urls";
+import visits from "./visits/urls";
 
 
 const app = new Elysia()
@@ -15,5 +16,6 @@ const app = new Elysia()
     .use(services)
     .use(orders)
     .use(users)
+    .use(visits)
     .get('/images/:folder/:name', ({params: {folder, name}}) => upload.getImage(name, folder))
     .listen(5000);

@@ -74,4 +74,40 @@ Views.signIn = async (user, ip) => {
     }
 }
 
+Views.signInAdmin = async (user, ip) => {
+    try {
+
+        let res = await pool.query(`SELECT * FROM users WHERE name = \$1`, [user.name])
+        res = res.rows[0]
+
+        if(!res) {
+            return {success: false, status: 401, message: 'Неверный логин или пароль'}
+        }
+
+        if(!res.active) {
+            return {success: false, status: 401, message: 'Ваш аккаунт не активирован'}
+        }
+
+        if(res.ban) {
+            return {success: false, status: 401, message: 'Ваш аккаунт заблокирован'}
+        }
+
+        if(res.role !== 'admin') {
+            return {success: false, status: 401, message: 'Доступ запрещён'}
+        }
+
+        let password = new Bun.CryptoHasher("sha256").update(user.password).digest("hex")
+        if(res.password !== password) {
+            return {success: false, status: 401, message: 'Неверный логин или пароль'}
+        }
+
+        const accessToken = jwt.create(res, ip)
+
+        return {success: true, accessToken: accessToken, status: 200}
+
+    } catch(e) {
+        return {success: false, message: e.message, status: 500}
+    }
+}
+
 export default Views;

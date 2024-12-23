@@ -12,6 +12,14 @@ const users = new Elysia({prefix: '/api/users'})
             })
         }
     })
+    .post('/signin/admin-panel', ({body, ip}) => Views.signInAdmin(body, ip), {
+        schema: {
+            body: t.Object({
+                name: t.String(),
+                password: t.String()
+            })
+        }
+    })
     .post('/create', ({body}) => Views.createUser(body), {
         schema: {
             body: t.Object({

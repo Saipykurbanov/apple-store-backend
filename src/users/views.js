@@ -9,8 +9,8 @@ Views.init = async (headers, ip) => {
     try {
 
         let user = utils.getToken(headers)
-        
-        if(user.ip !== ip) {
+
+        if(user.ip !== ip || !user) {
             return {success: false, status: 401, message: 'Токен не действителен'}
         }
 

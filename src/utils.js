@@ -42,6 +42,10 @@ utils.slug = async (str, db) => {
 
 utils.getToken = (headers) => {
 
+    if(!headers.ssid) {
+        return false
+    }
+    
     let user = utils.AES.decrypt(headers.ssid, utils.token)
     user = JSON.parse(user.toString(utils.CryptoJS.enc.Utf8))
 

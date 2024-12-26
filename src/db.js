@@ -50,6 +50,11 @@ const createtables = async () => {
             phone TEXT,
             address TEXT,
             poductid INT NOT NULL,
+            title TEXT,
+            image TEXT,
+            memory TEXT,
+            price INT,
+            status TEXT DEFAULT 'new',
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
 

@@ -46,11 +46,6 @@ Views.createProduct = async (body, headers, ip) => {
         }
 
         if(body.specifications && body.specifications.length > 0) {
-            // {
-            //     description: '',
-            //     imageName: '',
-            //     file: ''
-            // }
             const imageSpecificationUpload = body.specifications.map(async (el) => {
                 let load = upload.image(el.imageName, el.file, 'products')
                 if(load.success) {

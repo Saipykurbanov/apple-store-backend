@@ -33,7 +33,7 @@ Views.createProduct = async (body, headers, ip) => {
         let images_list = []
         let main_image = crypto.randomUUID()
 
-        await upload.image(slug.str, body.main_image)
+        await upload.image(main_image, body.main_image)
 
         if (body.images && body.images.length > 0) {
             const imageUploadPromises = body.images.map(async (el) => {
@@ -45,10 +45,26 @@ Views.createProduct = async (body, headers, ip) => {
             await Promise.all(imageUploadPromises);
         }
 
+        if(body.specifications && body.specifications.length > 0) {
+            // {
+            //     description: '',
+            //     imageName: '',
+            //     file: ''
+            // }
+            const imageSpecificationUpload = body.specifications.map(async (el) => {
+                let load = upload.image(el.imageName, el.file, 'products')
+                if(load.success) {
+                    delete el.file
+                }
+            })
+
+            await Promise.all(imageSpecificationUpload)
+        }
+
         let res = await pool.query(
-            `INSERT INTO products (title, description, price, discount, main_image, images, available, new) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, 
-            [body.title, body.description, body.price, body.discount, main_image, images_list, body.available, body.new])
+            `INSERT INTO products (title, description, price, discount, main_image, images, available, new, memory, specifications) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, 
+            [body.title, body.description, body.price, body.discount, main_image, images_list, body.available, body.new, body.memory, JSON.stringify(body.specifications)])
 
         return {success: true, status: 200, data: res.rows[0]}
 
@@ -97,12 +113,14 @@ Views.updateProduct = async (body, headers, ip, id) => {
             main_image = $5,
             images = $6,
             available = $7,
-            new = $8
-            WHERE productid = $9
+            new = $8,
+            memory = $9,
+            specifications = $10
+            WHERE productid = $11
             RETURNING *`, 
             [body.title, body.description, body.price, 
             body.discount, body.main_image, body.images, 
-            body.available, body.new, id])
+            body.available, body.new, body.memory, body.specifications, id])
 
         return {success: true, message: 'Товар успешно обновлён', data: req.rows[0]}
 

@@ -16,7 +16,8 @@ const products = new Elysia({prefix: '/api/products'})
                 images: t.Array(t.File()),
                 available: t.Boolean(),
                 new: t.Boolean(),
-                datetime: t.Date(),
+                memory: t.String(),
+                specifications: t.Array()
             }
         }
     })
@@ -31,7 +32,8 @@ const products = new Elysia({prefix: '/api/products'})
                 images: t.Array(t.File()),
                 available: t.Boolean(),
                 new: t.Boolean(),
-                datetime: t.Date(),
+                memory: t.String(),
+                specifications: t.String(),
                 // Файлы
                 mainFile: t.Files(),
                 imagesFiles: t.Array(t.File())

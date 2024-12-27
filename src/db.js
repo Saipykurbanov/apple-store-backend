@@ -23,7 +23,9 @@ const createtables = async () => {
             new BOOLEAN DEFAULT false,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
             memory TEXT,
-            specifications JSONB
+            specifications JSONB,
+            color TEXT,
+            colorName TEXT
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS users (
@@ -64,6 +66,12 @@ const createtables = async () => {
             day INT,
             month INT,
             year INT
+        )`)
+
+        await pool.query(`CREATE TABLE IF NOT EXISTS course (
+            courseid SERIAL PRIMARY KEY,
+            currency TEXT,
+            value INT
         )`)
 
         console.log('database init')

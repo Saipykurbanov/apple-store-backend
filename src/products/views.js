@@ -1,7 +1,6 @@
 import pool from "../db";
 import jwt from "../jwt";
 import upload from "../upload";
-import utils from "../utils";
 
 const Views = {}
 
@@ -57,9 +56,9 @@ Views.createProduct = async (body, headers, ip) => {
         }
 
         let res = await pool.query(
-            `INSERT INTO products (title, description, price, discount, main_image, images, available, new, memory, specifications) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, 
-            [body.title, body.description, body.price, body.discount, main_image, images_list, body.available, body.new, body.memory, JSON.stringify(body.specifications)])
+            `INSERT INTO products (title, description, price, discount, main_image, images, available, new, memory, specifications, color, colorName) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, 
+            [body.title, body.description, body.price, body.discount, main_image, images_list, body.available, body.new, body.memory, JSON.stringify(body.specifications), body.color, body.colorName])
 
         return {success: true, status: 200, data: res.rows[0]}
 
@@ -110,7 +109,9 @@ Views.updateProduct = async (body, headers, ip, id) => {
             available = $7,
             new = $8,
             memory = $9,
-            specifications = $10
+            specifications = $10,
+            color = $11,
+            colorName = $12
             WHERE productid = $11
             RETURNING *`, 
             [body.title, body.description, body.price, 

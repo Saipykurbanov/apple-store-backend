@@ -33,7 +33,6 @@ Views.getToday = async () => {
             const offset = currentDay === 0 ? 6 : currentDay - 1
             firstDayOfWeek.setDate(day - offset);
 
-            // Формируем массив дней недели
             const daysOfWeek = Array.from({ length: 7 }, (_, i) => {
                 const dayN = new Date(firstDayOfWeek);
                 dayN.setDate(firstDayOfWeek.getDate() + i)

@@ -31,6 +31,7 @@ const orders = new Elysia({prefix: '/api/orders'})
             }
         }
     })
+    .put('/close/order/:id', ({params: {id}, ip, headers}) => Views.closeOrder(id, headers, ip))
     .delete('/delete/:id', ({params: {id}, ip, headers}) => Views.deleteOrder(id, headers, ip))
 
 export default orders;

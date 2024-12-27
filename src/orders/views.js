@@ -48,10 +48,11 @@ Views.updateOrder = async (ip, headers, id, body) => {
             title = $5,
             image = $6,
             memory = $7,
-            price = $8
+            price = $8,
+            status = $9
             WHERE ordersid = $9
             RETURNING *`,
-            [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price, id])
+            [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price, body.status, id])
 
         return {success: true, message: 'Заказ обновлен', data: req.rows[0], status: 200}
 
@@ -60,6 +61,23 @@ Views.updateOrder = async (ip, headers, id, body) => {
     }
 } 
 
+Views.closeOrder = async (id, headers, ip) => {
+    try {
+
+        let access = jwt.checkTokenAdmin(headers, ip)
+        
+        if(!access.success) return access
+
+        let req = await pool.query(`UPDATE orders SET status = $1 WHERE ordersid = $2`, ['old', id])
+
+        return {success: true, message: 'Заказ завершен', status: 200}
+
+    } catch(e) {
+        console.log(e)
+        return {success: false, message: e.message, status: 500}
+    }
+}
+
 Views.deleteOrder = async (id, headers, ip) => {
     try {
 
@@ -67,7 +85,7 @@ Views.deleteOrder = async (id, headers, ip) => {
         
         if(!access.success) return access
 
-        let req = await pool.query(`DELETE FROM orders WHERE orders = $1`, [id])
+        let req = await pool.query(`DELETE FROM orders WHERE ordersid = $1`, [id])
 
         return {success: true, status: 200, message: 'Заказ удалён', data: req.rows[0]}
 

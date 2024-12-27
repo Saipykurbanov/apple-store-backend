@@ -10,6 +10,10 @@ const orders = new Elysia({prefix: '/api/orders'})
                 phone: t.String(),
                 address: t.String(),
                 productid: t.Integer(),
+                title: t.String(),
+                image: t.String(),
+                memory: t.String(),
+                price: t.Integer()
             }
         }
     })
@@ -20,9 +24,14 @@ const orders = new Elysia({prefix: '/api/orders'})
                 phone: t.String(),
                 address: t.String(),
                 productid: t.Integer(),
+                title: t.String(),
+                image: t.String(),
+                memory: t.String(),
+                price: t.Integer()
             }
         }
     })
+    .put('/close/order/:id', ({params: {id}, ip, headers}) => Views.closeOrder(id, headers, ip))
     .delete('/delete/:id', ({params: {id}, ip, headers}) => Views.deleteOrder(id, headers, ip))
 
 export default orders;

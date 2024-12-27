@@ -9,8 +9,8 @@ Views.init = async (headers, ip) => {
     try {
 
         let user = utils.getToken(headers)
-        
-        if(user.ip !== ip) {
+
+        if(user.ip !== ip || !user) {
             return {success: false, status: 401, message: 'Токен не действителен'}
         }
 
@@ -81,24 +81,24 @@ Views.signInAdmin = async (user, ip) => {
         res = res.rows[0]
 
         if(!res) {
-            return {success: false, status: 401, message: 'Неверный логин или пароль'}
+            return {success: false, status: 400, message: 'Неверный логин или пароль'}
         }
 
         if(!res.active) {
-            return {success: false, status: 401, message: 'Ваш аккаунт не активирован'}
+            return {success: false, status: 400, message: 'Ваш аккаунт не активирован'}
         }
 
         if(res.ban) {
-            return {success: false, status: 401, message: 'Ваш аккаунт заблокирован'}
+            return {success: false, status: 400, message: 'Ваш аккаунт заблокирован'}
         }
 
         if(res.role !== 'admin') {
-            return {success: false, status: 401, message: 'Доступ запрещён'}
+            return {success: false, status: 400, message: 'Доступ запрещён'}
         }
 
         let password = new Bun.CryptoHasher("sha256").update(user.password).digest("hex")
         if(res.password !== password) {
-            return {success: false, status: 401, message: 'Неверный логин или пароль'}
+            return {success: false, status: 400, message: 'Неверный логин или пароль'}
         }
 
         const accessToken = jwt.create(res, ip)

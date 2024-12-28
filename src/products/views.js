@@ -112,11 +112,11 @@ Views.updateProduct = async (body, headers, ip, id) => {
             specifications = $10,
             color = $11,
             colorName = $12
-            WHERE productid = $11
+            WHERE productid = $13
             RETURNING *`, 
             [body.title, body.description, body.price, 
             body.discount, body.main_image, body.images, 
-            body.available, body.new, body.memory, body.specifications, id])
+            body.available, body.new, body.memory, body.specifications, body.color, body.colorName, id])
 
         return {success: true, message: 'Товар успешно обновлён', data: req.rows[0]}
 
@@ -133,9 +133,27 @@ Views.deleteProduct = async (id, headers, ip) => {
         
         if(!access.success) return access
 
-        await pool.query(`DELETE FROM products WHERE productid = $1`, [id])
+        let product = await pool.query(`SELECT * FROM products WHERE productid = $1`, [id])
+        product = product.rows[0]
+        
+        if(product) {
+            
+            upload.deleteImage(product.main_image, 'products')
+            
+            product.images.map((el) => {
+                upload.deleteImage(el, 'prodcuts')
+            })
+            
+            product.specifications.map((el) => {
+                upload.deleteImage(el.imageName, 'products')
+            })
 
-        return {success: true, status: 200, message: 'Товар успешно удалён'}
+            await pool.query(`DELETE FROM products WHERE productid = $1`, [id])
+
+            return {success: true, status: 200, message: 'Товар успешно удалён'}
+        }
+
+        return {success: false, status: 400, message: 'Ошибка'}
 
     } catch(e) {
         return {success: false, status: 500, message: e.message}

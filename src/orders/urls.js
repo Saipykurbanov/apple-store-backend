@@ -3,6 +3,7 @@ import Views from "./views";
 
 const orders = new Elysia({prefix: '/api/orders'})
     .get('/all', () => Views.getAllOrders())
+    .get('/statistics', () => Views.getStatistics())
     .post('/create', ({body}) => Views.createOrder(body), {
         schema: {
             body: {

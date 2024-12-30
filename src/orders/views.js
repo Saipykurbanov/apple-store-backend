@@ -6,8 +6,9 @@ const Views = {}
 Views.getAllOrders = async () => {
     try {
 
-        let newOrders = await pool.query(`SELECT * FROM orders WHERE status = $1`, ['new'])
-        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1`, ['old'])
+        let newOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 ORDER BY datetime DESC`, ['new'])
+        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 LIMIT 10`, ['old'])
+
 
         return {success: true, status: 200, data: {newOrders: newOrders.rows, oldOrders: oldOrders.rows}}
 
@@ -16,12 +17,28 @@ Views.getAllOrders = async () => {
     }
 }
 
+Views.getStatistics = async () => {
+    try {
+        
+        let newOrders = await pool.query(`SELECT * FROM orders WHERE status = $1`, ['new'])
+        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1`, ['old'])
+
+        let all = newOrders.rows.length + oldOrders.rows.length
+        let profit = oldOrders.rows.reduce((sum, el) => sum + el.price, 0);
+
+        return {success: true, status: 200, data: {all, current: newOrders.rows.length, sold: oldOrders.rows.length, profit}}
+
+    } catch(e) {
+        return {success: false, message: e.message, status: 500}
+    }
+}
+
 Views.createOrder = async (body) => {
     try {   
-
+        console.log(body)
         let req = await pool.query(`
             INSERT INTO orders 
-            (username, phone, address, poductid, title, image, memory, price)
+            (username, phone, address, productid, title, image, memory, price)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
         [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price])
 

@@ -47,7 +47,7 @@ const createtables = async () => {
             username TEXT NOT NULL,
             phone TEXT,
             address TEXT,
-            poductid INT NOT NULL,
+            productid INT NOT NULL,
             title TEXT,
             image TEXT,
             memory TEXT,

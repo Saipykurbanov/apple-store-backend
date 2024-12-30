@@ -78,9 +78,18 @@ Views.deleteServices = async (id, headers, ip) => {
 
         if(!access.success) return access
 
-        await pool.query(`DELETE FROM services WHERE servicesid = $1`, [id])
+        let service = await pool.query(`SELECT * FROM services WHERE servicesid = $1`, [id])
+        service = service.rows[0]
 
-        return {success: true, status: 200, message: 'Услуга успещно удалена'}
+        if(service) {
+            upload.deleteImage(service.image, 'services')
+            
+            await pool.query(`DELETE FROM services WHERE servicesid = $1`, [id])
+
+            return {success: true, status: 200, message: 'Услуга успещно удалена'}
+        }
+
+        return {success: true, status: 400, message: 'Ошибка'}
         
     } catch(e) {
         return {success: false, message: e.message, status: 500}

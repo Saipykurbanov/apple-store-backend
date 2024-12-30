@@ -101,9 +101,27 @@ Views.deleteProduct = async (id, headers, ip) => {
         
         if(!access.success) return access
 
-        await pool.query(`DELETE FROM products WHERE productid = $1`, [id])
+        let product = await pool.query(`SELECT * FROM products WHERE productid = $1`, [id])
+        product = product.rows[0]
+        
+        if(product) {
+            
+            upload.deleteImage(product.main_image, 'products')
+            
+            product.images.map((el) => {
+                upload.deleteImage(el, 'prodcuts')
+            })
+            
+            product.specifications.map((el) => {
+                upload.deleteImage(el.imageName, 'products')
+            })
 
-        return {success: true, status: 200, message: 'Товар успешно удалён'}
+            await pool.query(`DELETE FROM products WHERE productid = $1`, [id])
+
+            return {success: true, status: 200, message: 'Товар успешно удалён'}
+        }
+
+        return {success: false, status: 400, message: 'Ошибка'}
 
     } catch(e) {
         return {success: false, status: 500, message: e.message}

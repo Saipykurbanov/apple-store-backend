@@ -35,7 +35,6 @@ Views.getStatistics = async () => {
 
 Views.createOrder = async (body) => {
     try {   
-        console.log(body)
         let req = await pool.query(`
             INSERT INTO orders 
             (username, phone, address, productid, title, image, memory, price)

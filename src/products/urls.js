@@ -9,15 +9,12 @@ const products = new Elysia({prefix: '/api/products'})
         schema: {
             body: {
                 title: t.String(),
-                description: t.String(),
                 price: t.Integer(),
-                discount: t.Integer(),
                 main_image: t.Files(),
-                images: t.Array(t.File()),
-                available: t.Boolean(),
-                new: t.Boolean(),
                 memory: t.String(),
-                specifications: t.Array()
+                specifications: t.Array(),
+                color: t.String(),
+                colorName: t.String()
             }
         }
     })
@@ -25,18 +22,14 @@ const products = new Elysia({prefix: '/api/products'})
         schema: {
             body: {
                 title: t.String(),
-                description: t.String(),
                 price: t.Integer(),
-                discount: t.Integer(),
                 main_image: t.Files(),
-                images: t.Array(t.File()),
-                available: t.Boolean(),
-                new: t.Boolean(),
                 memory: t.String(),
                 specifications: t.String(),
+                color: t.String(),
+                colorName: t.String(),
                 // Файлы
-                mainFile: t.Files(),
-                imagesFiles: t.Array(t.File())
+                mainFile: t.Files()
             }
         }
     })

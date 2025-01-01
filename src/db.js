@@ -62,10 +62,10 @@ const createtables = async () => {
 
         await pool.query(`CREATE TABLE IF NOT EXISTS visits (
             visitid SERIAL PRIMARY KEY,
-            count INT DEFAULT 1,
             day INT,
             month INT,
-            year INT
+            year INT,
+            count TEXT[]
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS course (

@@ -10,7 +10,7 @@ Views.getAllProducts = async (query) => {
         let sort = query.sort || 'DESC'
 
         let res = await pool.query(`
-            SELECET * 
+            SELECT * 
             FROM products
             ORDER BY ${order} ${sort}
         `)
@@ -31,7 +31,7 @@ Views.createProduct = async (body, headers, ip) => {
         
         let main_image = crypto.randomUUID()
 
-        await upload.image(main_image, body.main_image)
+        await upload.image(main_image, body.main_image, 'products')
 
         body.specifications = JSON.parse(body.specifications)
 

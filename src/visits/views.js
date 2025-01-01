@@ -40,7 +40,7 @@ Views.getToday = async () => {
                     day: dayN.getDate(),
                     month: dayN.getMonth() + 1,
                     year: dayN.getFullYear(),
-                    count: 0,
+                    count: [],
                     weekday: weekdays[dayN.getDay()]
                 };
             });
@@ -54,9 +54,9 @@ Views.getToday = async () => {
                 return existingVisit ? { ...existingVisit, weekday: dayOfWeek.weekday } : dayOfWeek;
             });
 
-            all = req.reduce((sum, el) => sum + el.count, 0);
+            all = req.reduce((sum, el) => sum + el.count.length, 0);
 
-            let today = req.find(item => item.day === day && item.month === month && item.year === year)?.count || 0
+            let today = req.find(item => item.day === day && item.month === month && item.year === year)?.count.length || 0
 
             return {success: true, status: 200, data: {today: today, all: all, list: result}}
         }
@@ -68,7 +68,7 @@ Views.getToday = async () => {
     }
 }
 
-Views.addVisits = async () => {
+Views.addVisits = async (ip) => {
     try {
         const date = new Date();
         const day = date.getDate();
@@ -81,9 +81,15 @@ Views.addVisits = async () => {
         let visit = req.rows[0]
 
         if(visit) {
-            await pool.query(`UPDATE visits SET count = $1 WHERE visitid = $2`, [(visit.count + 1), visit.visitid])
+            let list = visit.count
+            if(list.includes(ip)) {
+                return {success: true, status: 200, message: 'Пользователь вошёл на сайт, но уже добавлен в посетители'}
+            } else {
+                list.push(ip)
+                await pool.query(`UPDATE visits SET count = $1 WHERE visitid = $2`, [list, visit.visitid])
+            }
         } else {
-            await pool.query(`INSERT INTO visits (day, month, year) VALUES ($1, $2, $3)`, [day, month, year])
+            await pool.query(`INSERT INTO visits (day, month, year, count) VALUES ($1, $2, $3, $4)`, [day, month, year, [ip]])
         }
 
         return {success: true, status: 200}

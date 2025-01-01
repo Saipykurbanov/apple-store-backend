@@ -31,7 +31,7 @@ Views.createServices = async (body, headers, ip) => {
             VALUES ($1, $2, $3, $4) RETURNING *`,
             [body.title, body.description, body.price, imageName])
             
-        await upload.image(imageName, body.image, 'services')
+        await upload.image(imageName, body.image, 'service')
 
         return {success: true, message: 'Услуга успешно добавлена', status: 200, data: res.rows[0]}
 
@@ -48,9 +48,9 @@ Views.updateServices = async (id, body, headers, ip) => {
         if(!access.success) return access
 
         if(body.file) {
-            upload.deleteImage(body.image, 'services')
+            upload.deleteImage(body.image, 'service')
             body.image = crypto.randomUUID()
-            await upload.image(imageName, body.file, 'services')
+            await upload.image(imageName, body.file, 'service')
         }
 
         let res = await pool.query(
@@ -82,7 +82,7 @@ Views.deleteServices = async (id, headers, ip) => {
         service = service.rows[0]
 
         if(service) {
-            upload.deleteImage(service.image, 'services')
+            upload.deleteImage(service.image, 'service')
             
             await pool.query(`DELETE FROM services WHERE servicesid = $1`, [id])
 

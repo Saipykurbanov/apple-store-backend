@@ -84,7 +84,7 @@ Views.updateProduct = async (body, headers, ip, id) => {
             colorName = $7
             WHERE productid = $8
             RETURNING *`, 
-            [body.title, body.price, body.main_image, body.memory, body.specifications, body.color, body.colorName, id])
+            [body.title, body.price, body.main_image, body.memory, JSON.stringify(body.specifications), body.color, body.colorName, id])
 
         return {success: true, message: 'Товар успешно обновлён', data: req.rows[0]}
 
@@ -107,10 +107,6 @@ Views.deleteProduct = async (id, headers, ip) => {
         if(product) {
             
             upload.deleteImage(product.main_image, 'products')
-            
-            product.images.map((el) => {
-                upload.deleteImage(el, 'prodcuts')
-            })
             
             product.specifications.map((el) => {
                 upload.deleteImage(el.imageName, 'products')

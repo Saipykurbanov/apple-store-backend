@@ -33,6 +33,9 @@ Views.createProduct = async (body, headers, ip) => {
 
         await upload.image(main_image, body.main_image, 'products')
 
+        console.log(body.specifications)
+
+        return
         body.specifications = JSON.parse(body.specifications)
 
         if(body.specifications && body.specifications.length > 0) {

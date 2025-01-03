@@ -19,9 +19,16 @@ const createtables = async () => {
             available BOOLEAN DEFAULT true,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
             memory TEXT,
-            specifications JSONB,
             color TEXT,
-            colorName TEXT
+            colorName TEXT,
+            article TEXT UNIQUE
+        )`)
+
+        await pool.query(`CREATE TABLE IF NOT EXISTS specifications (
+            specificationsid SERIAL PRIMARY KEY,
+            icon TEXT,
+            description TEXT,
+            article TEXT
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS users (

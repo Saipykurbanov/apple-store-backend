@@ -12,7 +12,7 @@ const products = new Elysia({prefix: '/api/products'})
                 price: t.Integer(),
                 main_image: t.Files(),
                 memory: t.String(),
-                specifications: t.Array(),
+                article: t.String(),
                 color: t.String(),
                 colorName: t.String()
             }
@@ -23,9 +23,9 @@ const products = new Elysia({prefix: '/api/products'})
             body: {
                 title: t.String(),
                 price: t.Integer(),
-                main_image: t.Files(),
+                main_image: t.String(),
                 memory: t.String(),
-                specifications: t.String(),
+                article: t.String(),
                 color: t.String(),
                 colorName: t.String(),
                 // Файлы

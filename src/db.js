@@ -56,6 +56,15 @@ const createtables = async () => {
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
 
+        await pool.query(`CREATE TABLE IF NOT EXISTS services-orders (
+            ordersid SERIAL PRIMARY KEY,
+            username TEXT,
+            phone TEXT,
+            serviceName TEXT,
+            status TEXT DEFAULT 'new',
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
+        )`)
+
         await pool.query(`CREATE TABLE IF NOT EXISTS visits (
             visitid SERIAL PRIMARY KEY,
             day INT,

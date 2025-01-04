@@ -40,7 +40,8 @@ const orders = new Elysia({prefix: '/api/orders'})
             body: {
                 name: t.String(),
                 service_name: t.String(),
-                phone: t.String()
+                phone: t.String(),
+                price: t.Integer()
             }
         }
     })
@@ -49,7 +50,8 @@ const orders = new Elysia({prefix: '/api/orders'})
             body: {
                 name: t.String(),
                 service_name: t.String(),
-                phone: t.String()
+                phone: t.String(),
+                price: t.Integer()
             }
         }
     })

@@ -77,6 +77,14 @@ const createtables = async () => {
             value INT
         )`)
 
+        await pool.query(`CREATE TABLE IF NOT EXISTS servicesOrders (
+            servicesid SERIAL PRIMARY KEY,
+            name TEXT,
+            service_name TEXT,
+            phone TEXT,
+            status TEXT DEFAULT 'new'
+        )`)
+
         console.log('database init')
     }
     catch (e) {

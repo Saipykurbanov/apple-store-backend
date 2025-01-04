@@ -34,5 +34,27 @@ const orders = new Elysia({prefix: '/api/orders'})
     })
     .put('/close/order/:id', ({params: {id}, ip, headers}) => Views.closeOrder(id, headers, ip))
     .delete('/delete/:id', ({params: {id}, ip, headers}) => Views.deleteOrder(id, headers, ip))
+    .get('/services/all', () => Views.getAllServiceOrders())
+    .post('services/create', ({body}) => Views.createServiceOrder(body), {
+        schema: {
+            body: {
+                name: t.String(),
+                service_name: t.String(),
+                phone: t.String()
+            }
+        }
+    })
+    .put('/services/update/:id', ({ip, headers, body, params: {id}}) => Views.updateServiceOrder(ip, headers, id, body), {
+        schema: {
+            body: {
+                name: t.String(),
+                service_name: t.String(),
+                phone: t.String()
+            }
+        }
+    })
+    .put('services/close/:id', ({ip, headers, body, params: {id}}) => Views.closeServiceOrder(ip, headers, id, body))
+    .delete('services/delete/:id', ({params: {id}, headers, ip}) => Views.deleteServiceOrder(id, headers, ip))
+
 
 export default orders;

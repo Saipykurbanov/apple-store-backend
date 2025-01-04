@@ -35,20 +35,21 @@ const products = new Elysia({prefix: '/api/products'})
     })
     .post('/specification/create', ({ip, headers, body}) => Views.createSpecification(body, headers, ip), {
         schema: {
-            body: t.Object({
+            body: {
                 file: t.Files(),
                 description: t.String(),
                 article: t.String(),
                 imageName: t.String()
-            })
+            }
         }
     })
     .put('/specification/update/:id', ({ip, headers, body, params: {id}}) => Views.updateSpecification(body, headers, ip, id), {
         schema: {
-            body: t.Object({
-                image: t.Files(),
+            body: {
+                file: t.Files(),
+                icon: t.String(),
                 description: t.String()
-            })
+            }
         }
     })
 

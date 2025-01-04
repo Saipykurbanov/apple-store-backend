@@ -12,7 +12,7 @@ Views.getAllProducts = async (query) => {
         let sort = query.sort || 'DESC'
 
         /*Отправка всех товаров*/
-        let req = await pool.query(`
+        let res = await pool.query(`
             SELECT 
                 products.productid,
                 products.title,
@@ -49,7 +49,7 @@ Views.getAllProducts = async (query) => {
             ORDER BY ${order} ${sort}
         `);
 
-        return {success: true, status: 200, data: req.rows}
+        return {success: true, status: 200, data: res.rows}
 
     } catch(e) {
         return {success: false, status: 500, message: e.message}
@@ -114,17 +114,17 @@ Views.updateSpecification = async (body, headers, ip, id) => {
         if(!access.success) return access
 
         /*Обновление изображения*/
-        if(body.image) {
+        if(body.file !== 'false') {
             upload.deleteImage(body.icon, 'products')
             body.icon = crypto.randomUUID()
-            await upload.image(body.icon, body.image, 'products')
+            await upload.image(body.icon, body.file, 'products')
         }
 
         /*Обновление хар-ки*/
         let res = await pool.query(`
             UPDATE specifications SET
-            icon $1,
-            description $2
+            icon = $1,
+            description = $2
             WHERE specificationsid = $3
             RETURNING *`,
             [body.icon, body.description, id]    
@@ -145,10 +145,11 @@ Views.updateProduct = async (body, headers, ip, id) => {
         if(!access.success) return access
 
         /*Обновление изображения*/
-        if(body.mainFile) {
+        if(body.mainFile !== 'false') {
             upload.deleteImage(body.main_image, 'products')
             body.main_image = crypto.randomUUID()
             await upload.image(body.main_image, body.mainFile, 'products')
+            console.log('dsd')
         }
 
         /*Обновление товара*/

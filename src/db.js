@@ -81,8 +81,10 @@ const createtables = async () => {
             servicesid SERIAL PRIMARY KEY,
             name TEXT,
             service_name TEXT,
+            price INT,
             phone TEXT,
-            status TEXT DEFAULT 'new'
+            status TEXT DEFAULT 'new',
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
         )`)
 
         console.log('database init')

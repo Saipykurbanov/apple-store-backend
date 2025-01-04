@@ -126,10 +126,10 @@ Views.createServiceOrder = async (body) => {
         
         let res = await pool.query(`
             INSERT INTO servicesOrders
-            (name, service_name, phone)
-            VALUES ($1, $2, $3)
+            (name, service_name, phone, price)
+            VALUES ($1, $2, $3, $4)
             RETURNING *
-        `, [body.name, body.service_name, body.phone])
+        `, [body.name, body.service_name, body.phone, body.price])
 
         return {success: true, message: 'Заказ отправлен', data: res.rows[0]}
 
@@ -148,10 +148,11 @@ Views.updateServiceOrder = async (ip, headers, id, body) => {
             UPDATE servicesOrders SET
             name = $1,
             service_name = $2,
-            phone = $3
-            WHERE servicesid = $4
+            phone = $3,
+            price = $4
+            WHERE servicesid = $5
             RETURNING *
-        `, [body.name, body.service_name, body.phone, id])
+        `, [body.name, body.service_name, body.phone, body.price, id])
 
         return {success: true, message: 'Заказ обновлён', data: res.rows[0]}
 

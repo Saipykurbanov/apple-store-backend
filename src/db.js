@@ -19,9 +19,16 @@ const createtables = async () => {
             available BOOLEAN DEFAULT true,
             datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
             memory TEXT,
-            specifications JSONB,
             color TEXT,
-            colorName TEXT
+            colorName TEXT,
+            article TEXT UNIQUE
+        )`)
+
+        await pool.query(`CREATE TABLE IF NOT EXISTS specifications (
+            specificationsid SERIAL PRIMARY KEY,
+            icon TEXT,
+            description TEXT,
+            article TEXT
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS users (
@@ -68,6 +75,14 @@ const createtables = async () => {
             courseid SERIAL PRIMARY KEY,
             currency TEXT,
             value INT
+        )`)
+
+        await pool.query(`CREATE TABLE IF NOT EXISTS servicesOrders (
+            servicesid SERIAL PRIMARY KEY,
+            name TEXT,
+            service_name TEXT,
+            phone TEXT,
+            status TEXT DEFAULT 'new'
         )`)
 
         console.log('database init')

@@ -30,6 +30,7 @@ Views.getAllProducts = async (query) => {
                             'description', specifications.description,
                             'icon', specifications.icon
                         )
+                        ORDER BY specifications.description 
                     ) FILTER (WHERE specifications.article IS NOT NULL), 
                     '[]'
                 ) AS specifications

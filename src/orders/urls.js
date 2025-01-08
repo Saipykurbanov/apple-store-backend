@@ -14,7 +14,9 @@ const orders = new Elysia({prefix: '/api/orders'})
                 title: t.String(),
                 image: t.String(),
                 memory: t.String(),
-                price: t.Integer()
+                price: t.Integer(),
+                color: t.String(),
+                colorname: t.String()
             }
         }
     })
@@ -28,7 +30,9 @@ const orders = new Elysia({prefix: '/api/orders'})
                 title: t.String(),
                 image: t.String(),
                 memory: t.String(),
-                price: t.Integer()
+                price: t.Integer(),
+                color: t.String(),
+                colorname: t.String()
             }
         }
     })

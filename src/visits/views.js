@@ -23,7 +23,7 @@ Views.getToday = async () => {
         const weekdays = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
         let all = 0
 
-        let req = await pool.query(`SELECT * FROM visits`)
+        let req = await pool.query(`SELECT * FROM visits WHERE month = $1 AND year = $2`, [month, year])
         req = req.rows
 
         if(req.length > 0) {

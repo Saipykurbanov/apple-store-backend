@@ -60,7 +60,9 @@ const createtables = async () => {
             memory TEXT,
             price INT,
             status TEXT DEFAULT 'new',
-            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP
+            datetime TIMESTAMP DEFAULT LOCALTIMESTAMP,
+            color TEXT,
+            colorname TEXT
         )`)
 
         await pool.query(`CREATE TABLE IF NOT EXISTS visits (

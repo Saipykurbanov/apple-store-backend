@@ -1,6 +1,6 @@
-import pool from "../db";
-import jwt from "../jwt";
-import upload from "../upload";
+import pool from "../db.js";
+import jwt from "../jwt.js";
+import upload from "../upload.js";
 
 const Views = {}
 

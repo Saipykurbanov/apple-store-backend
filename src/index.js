@@ -1,13 +1,13 @@
 import { Elysia } from "elysia";
 import { cors } from '@elysiajs/cors'
 import { ip } from "elysia-ip";
-import upload from "./upload";
-import services from "./services/urls";
-import products from "./products/urls";
-import orders from "./orders/urls";
-import users from "./users/urls";
-import visits from "./visits/urls";
-import course from "./course/urls";
+import upload from "./upload.js";
+import services from "./services/urls.js";
+import products from "./products/urls.js";
+import orders from "./orders/urls.js";
+import users from "./users/urls.js";
+import visits from "./visits/urls.js";
+import course from "./course/urls.js";
 
 
 const app = new Elysia()

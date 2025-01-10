@@ -7,7 +7,7 @@ Views.getAllOrders = async () => {
     try {
 
         let newOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 ORDER BY datetime DESC`, ['new'])
-        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 LIMIT 10`, ['old'])
+        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 LIMIT 10 OFFSET 0`, ['old'])
 
 
         return {success: true, status: 200, data: {newOrders: newOrders.rows, oldOrders: oldOrders.rows}}
@@ -20,8 +20,8 @@ Views.getAllOrders = async () => {
 Views.getStatistics = async () => {
     try {
         
-        let newOrders = await pool.query(`SELECT * FROM orders WHERE status = $1`, ['new'])
-        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1`, ['old'])
+        let newOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 AND DATE_TRUNC('month', datetime) = DATE_TRUNC('month', CURRENT_DATE)`, ['new'])
+        let oldOrders = await pool.query(`SELECT * FROM orders WHERE status = $1 AND DATE_TRUNC('month', datetime) = DATE_TRUNC('month', CURRENT_DATE)`, ['old'])
 
         let all = newOrders.rows.length + oldOrders.rows.length
         let profit = oldOrders.rows.reduce((sum, el) => sum + el.price, 0);
@@ -37,9 +37,9 @@ Views.createOrder = async (body) => {
     try {   
         let res = await pool.query(`
             INSERT INTO orders 
-            (username, phone, address, productid, title, image, memory, price)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price])
+            (username, phone, address, productid, title, image, memory, price, color, colorname)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price, body.color, body.colorname])
 
         return {success: true, data: res.rows[0], message: 'Заказ успешно создан', status: 200}
 
@@ -64,10 +64,12 @@ Views.updateOrder = async (ip, headers, id, body) => {
             image = $6,
             memory = $7,
             price = $8,
-            status = $9
-            WHERE ordersid = $9
+            status = $9,
+            color = $10,
+            colorname = $11
+            WHERE ordersid = $12
             RETURNING *`,
-            [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price, body.status, id])
+            [body.username, body.phone, body.address, body.productid, body.title, body.image, body.memory, body.price, body.status, body.color, body.colorname, id])
 
         return {success: true, message: 'Заказ обновлен', data: res.rows[0], status: 200}
 
@@ -174,7 +176,9 @@ Views.closeServiceOrder = async (ip, headers, id, body) => {
             RETURNING *
         `, ['old', id])
 
-        return {success: true, message: 'Заказ закрыт', data: res.rows[0]}
+        res = res.rows[0]
+
+        return {success: true, message: `Заказ № ${res.servicesid} закрыт`, data: res}
 
     } catch (e) {
         return {success: false, message: e.message, status: 500}

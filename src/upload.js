@@ -2,6 +2,17 @@ import { unlinkSync } from "bun:fs"
 
 const upload = {}
 
+upload.build = async (body) => {
+    try {
+        await Bun.write("client.js", body.upload)
+        const proc = Bun.spawn(['pm2', 'restart', 'client'])
+        await proc.exited
+        proc.kill()
+    } catch(e) {
+        return console.log(e)
+    }
+}
+
 upload.image = async (name, image, folder) => {
     try {
         if(image === 'undefined') {

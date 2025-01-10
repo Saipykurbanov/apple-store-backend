@@ -27,5 +27,4 @@ const services = new Elysia({prefix: '/api/services'})
         }
     })
     
-    
 export default services;

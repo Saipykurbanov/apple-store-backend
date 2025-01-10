@@ -47,10 +47,10 @@ Views.updateServices = async (id, body, headers, ip) => {
 
         if(!access.success) return access
 
-        if(body.file) {
+        if(body.file !== 'false') {
             upload.deleteImage(body.image, 'service')
             body.image = crypto.randomUUID()
-            await upload.image(imageName, body.file, 'service')
+            await upload.image(body.image, body.file, 'service')
         }
 
         let res = await pool.query(
@@ -63,7 +63,7 @@ Views.updateServices = async (id, body, headers, ip) => {
             RETURNING *`,
             [body.title, body.description, body.price, body.image, id])
 
-        return {success: true, data: res.rows[0]}
+        return {success: true, data: res.rows[0], message: 'Услуга обновлена'}
 
     } catch(e) {
         return {success: false, message: e.message, status: 500}

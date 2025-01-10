@@ -1,7 +1,7 @@
 import { Pool } from 'pg'
 
 const pool = new Pool({
-    user: 'postgres',
+    user: 'admin',
     host: 'localhost',
     database: 'apple-store',
     password: 'admin',

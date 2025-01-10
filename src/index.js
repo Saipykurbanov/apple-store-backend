@@ -11,7 +11,9 @@ import course from "./course/urls";
 
 
 const app = new Elysia()
-    .use(cors())
+    .use(cors({
+        origin: 'https://ifixstore.ru'
+    }))
     .use(ip())
     .use(products)
     .use(services)

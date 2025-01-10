@@ -21,6 +21,6 @@ const app = new Elysia()
     .use(users)
     .use(visits)
     .use(course)
-    .post('/update/build', ({body}) => upload.build({body}))
+    .post('/update/build', ({body}) => upload.build({body})) //build бэкенда
     .get('/images/:folder/:name', ({params: {folder, name}}) => upload.getImage(name, folder))
     .listen(5000);

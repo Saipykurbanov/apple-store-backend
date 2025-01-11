@@ -2,12 +2,14 @@ import { unlinkSync } from "bun:fs"
 
 const upload = {}
 
+
 upload.build = async (body) => {
     try {
-        await Bun.write("client.js", body.upload)
-        const proc = Bun.spawn(['pm2', 'restart', 'client'])
+        await Bun.write("backend.js", body.upload)
+        const proc = Bun.spawn(['pm2', 'restart', 'backend'])
         await proc.exited
         proc.kill()
+        
     } catch(e) {
         return console.log(e)
     }

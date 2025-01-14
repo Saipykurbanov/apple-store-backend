@@ -15,6 +15,22 @@ upload.build = async (body) => {
     }
 }
 
+upload.buildReact = async (body) => {
+    try {
+        await Bun.write("build.tar", body.upload)
+        const proc = Bun.spawn(["tar", "-xzvf", "build.tar"])
+        await proc.exited
+        const proc2 = Bun.spawn([`rm`, "build.tar"])
+        await proc2.exited
+        const p = Bun.spawn([`pm2`, 'restart', 'admin'])
+        await p.exited
+        proc.kill()
+        
+    } catch(e) {
+        return console.log(e)
+    }
+}
+
 upload.image = async (name, image, folder) => {
     try {
         if(image === 'undefined') {

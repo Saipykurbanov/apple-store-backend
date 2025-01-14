@@ -30,5 +30,14 @@ const app = new Elysia()
             return 'error'
         }
     }) //build бэкенда
+    .post('/build/admin', ({body}) => {
+        try {
+            upload.buildReact(body)
+            return 'success'
+        } catch(e) {
+            console.log(e)
+            return 'error'
+        }
+    }) //build реакта
     .get('/images/:folder/:name', ({params: {folder, name}}) => upload.getImage(name, folder))
     .listen(5000);

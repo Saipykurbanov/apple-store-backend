@@ -1,5 +1,5 @@
 import Elysia, { t } from "elysia";
-import Views from "./views";
+import Views from "./views.js";
 
 
 const products = new Elysia({prefix: '/api/products'})

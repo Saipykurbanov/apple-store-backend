@@ -1,6 +1,6 @@
-import pool from "../db";
-import jwt from "../jwt";
-import utils from "../utils";
+import pool from "../db.js";
+import jwt from "../jwt.js";
+import utils from "../utils.js";
 
 
 const Views = {}

@@ -18,7 +18,7 @@ upload.build = async (body) => {
 upload.buildReact = async (body) => {
     try {
         await Bun.write("build.tar", body.upload)
-        const proc = Bun.spawn(["tar", "-xzvf", "build.tar"])
+        const proc = Bun.spawn(["tar", "-xzvf", "build.tar", "-C", "../admin"]);
         await proc.exited
         const proc2 = Bun.spawn([`rm`, "build.tar"])
         await proc2.exited

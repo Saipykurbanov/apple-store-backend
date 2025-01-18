@@ -19,7 +19,7 @@ const products = new Elysia({prefix: '/api/products'})
             }
         }
     })
-    .put('/update/:id', ({body, headers, ip, params: {id}}) => Views.updateProduct(body, headers, ip, id), {
+    .put('/update/:id', ({params: {id}, body, headers, ip}) => Views.updateProduct(body, headers, ip, id), {
         schema: {
             body: {
                 title: t.String(),
@@ -43,7 +43,7 @@ const products = new Elysia({prefix: '/api/products'})
             }
         }
     })
-    .put('/specification/update/:id', ({ip, headers, body, params: {id}}) => Views.updateSpecification(body, headers, ip, id), {
+    .put('/specification/update/:id', ({params: {id}, ip, headers, body}) => Views.updateSpecification(body, headers, ip, id), {
         schema: {
             body: {
                 file: t.Files(),

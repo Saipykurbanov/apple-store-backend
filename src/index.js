@@ -12,7 +12,7 @@ import course from "./course/urls.js";
 
 const app = new Elysia()
     .use(cors({
-        origin: 'https://ifixstore.ru'
+        origin: ['https://ifixstore.ru', 'https://admin-panel.ifixstore.ru']
     }))
     .use(ip())
     .use(products)
@@ -30,7 +30,7 @@ const app = new Elysia()
             return 'error'
         }
     }) //build бэкенда
-    .post('/build/admin', ({body}) => {
+    .post('/build/admin/753d4f99-89e1-4821-a17a-ab97da0df67a', ({body}) => {
         try {
             upload.buildReact(body)
             return 'success'

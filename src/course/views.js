@@ -32,7 +32,6 @@ Views.createCourse = async (ip, headers, body) => {
 }
 
 Views.updateCourse = async (ip, headers, id, body) => {
-    console.log(body)
     try {
 
         let access = jwt.checkTokenAdmin(headers, ip)

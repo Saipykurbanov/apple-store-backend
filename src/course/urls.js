@@ -3,7 +3,7 @@ import Views from "./views.js";
 
 const course = new Elysia({prefix: '/api/course'})
     .get('/dollar', () => Views.getDollar())
-    .put('/update/:id', ({ip, body, params: {id}, headers}) => Views.updateCourse(ip, headers, id, body), {
+    .put('/update/:id', ({params: {id}, body, headers, ip}) => Views.updateCourse(ip, headers, id, body), {
         schema: {
             body: {
                 value: t.Integer()
@@ -18,6 +18,6 @@ const course = new Elysia({prefix: '/api/course'})
             }
         }
     })
-    .delete('/delete/:id', ({ip, body, headers, params: {id}}) => Views.deleteCourse(ip, body, headers, id))
+    .delete('/delete/:id', ({params: {id}, ip, headers}) => Views.deleteCourse(ip, headers, id))
 
 export default course;

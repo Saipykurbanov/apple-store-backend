@@ -20,7 +20,7 @@ const orders = new Elysia({prefix: '/api/orders'})
             }
         }
     })
-    .put('/update/:id', ({body, params: {id}, ip, headers}) => Views.updateOrder(ip, headers, id, body), {
+    .put('/update/:id', ({params: {id}, body, ip, headers}) => Views.updateOrder(ip, headers, id, body), {
         schema: {
             body: {
                 username: t.String(),
@@ -49,7 +49,7 @@ const orders = new Elysia({prefix: '/api/orders'})
             }
         }
     })
-    .put('/services/update/:id', ({ip, headers, body, params: {id}}) => Views.updateServiceOrder(ip, headers, id, body), {
+    .put('/services/update/:id', ({params: {id}, ip, headers, body}) => Views.updateServiceOrder(ip, headers, id, body), {
         schema: {
             body: {
                 name: t.String(),
@@ -59,7 +59,7 @@ const orders = new Elysia({prefix: '/api/orders'})
             }
         }
     })
-    .put('services/close/:id', ({ip, headers, body, params: {id}}) => Views.closeServiceOrder(ip, headers, id, body))
+    .put('services/close/:id', ({params: {id}, ip, headers, body}) => Views.closeServiceOrder(ip, headers, id, body))
     .delete('services/delete/:id', ({params: {id}, headers, ip}) => Views.deleteServiceOrder(id, headers, ip))
 
 
